@@ -53,7 +53,7 @@
 <body>
      <div id="box">
         <h1> Main application </h1>
-        <h2 th:text="${time}"/>
+        <h2 id="time-holder" th:text="${time}"/>
         
         <form method="post" th:action="@{/library/book}" >
         	<input type="text" name="isbn" placeholder="ISBN"/>
@@ -61,5 +61,34 @@
         	<input type="submit" />
         </form>
      </div>
+     
+     <script>
+     	const timeHolder = document.querySelector("#time-holder");
+     	const fetchTime = async (onTime) => {
+			try {
+				const response = await fetch("/library/time");
+				
+				if(response.ok) {
+					const data = await response.json();
+					onTime(data.time);
+				}else {
+					throw new Error("Response status: Not ok")
+				}
+			} catch {
+				console.error("Something happen :c")
+			}
+		}
+		
+		const changeTime = () => {
+			setInterval(()=> {
+				fetchTime((time)=> {
+					timeHolder.innerHTML = time;
+				})
+			}, 1000);
+		}
+		
+		changeTime();
+     	
+     </script>
 </body>
 </html>

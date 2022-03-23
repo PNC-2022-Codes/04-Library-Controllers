@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.douglashdezt.library.models.dtos.BookResponseDTO;
 import com.douglashdezt.library.models.dtos.BookSearchDTO;
+import com.douglashdezt.library.models.dtos.TimeResponseDTO;
 import com.douglashdezt.library.models.entities.Book;
 
 @Controller
@@ -37,6 +39,12 @@ public class LibraryController {
 		model.addAttribute("time", time);
 		
 		return "main";
+	}
+	
+	@GetMapping("/time")
+	public @ResponseBody TimeResponseDTO getTime() {
+		String time = Calendar.getInstance().getTime().toString();
+		return new TimeResponseDTO(time);
 	}
 	
 	@PostMapping("/book")
